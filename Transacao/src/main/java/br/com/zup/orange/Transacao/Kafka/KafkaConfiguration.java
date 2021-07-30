@@ -14,6 +14,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import br.com.zup.orange.Transacao.Transacoes.Transacao;
+import br.com.zup.orange.Transacao.Transacoes.TransacaoRequest;
 
 @Configuration
 public class KafkaConfiguration {
@@ -37,15 +38,15 @@ public class KafkaConfiguration {
 	}
 
 	@Bean
-	public ConsumerFactory<String, Transacao> transactionConsumerFactory() {
+	public ConsumerFactory<String, TransacaoRequest> transactionConsumerFactory() {
 		StringDeserializer stringDeserializer = new StringDeserializer();
-		JsonDeserializer<Transacao> jsonDeserializer = new JsonDeserializer<>(Transacao.class, false);
+		JsonDeserializer<TransacaoRequest> jsonDeserializer = new JsonDeserializer<>(TransacaoRequest.class, false);
 		return new DefaultKafkaConsumerFactory<>(consumerConfigurations(), stringDeserializer, jsonDeserializer);
 	}
 
 	@Bean
-	public ConcurrentKafkaListenerContainerFactory<String, Transacao> kafkaListenerContainerFactory() {
-		ConcurrentKafkaListenerContainerFactory<String, Transacao> factory = new ConcurrentKafkaListenerContainerFactory<>();
+	public ConcurrentKafkaListenerContainerFactory<String, TransacaoRequest> kafkaListenerContainerFactory() {
+		ConcurrentKafkaListenerContainerFactory<String, TransacaoRequest> factory = new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(transactionConsumerFactory());
 		return factory;
 	}
